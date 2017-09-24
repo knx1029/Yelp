@@ -29,6 +29,7 @@ class FilterViewController: UIViewController, UITableViewDelegate, UITableViewDa
         distanceExpand = false
         sortByExpand = false
         categoryExpand = false
+        filter.refreshCategory()
     }
     
     override func didReceiveMemoryWarning() {
@@ -169,6 +170,7 @@ class FilterViewController: UIViewController, UITableViewDelegate, UITableViewDa
         case 3:
             if ((categoryExpand && row == self.filter.CATEGORY_OPTIONS.count) || (!categoryExpand && row == NUM_CATEGORIES_DISPLAY)) {
                 categoryExpand = !categoryExpand
+                filter.refreshCategory()
                 self.filterTable.reloadData()
             }
         default:
@@ -191,7 +193,7 @@ class FilterViewController: UIViewController, UITableViewDelegate, UITableViewDa
             self.filter.offerDeal = cell.optionSwitch.isOn
         case .Category(let index):
             print("Category \(index) tapped")
-            self.filter.category[index] = cell.optionSwitch.isOn
+            self.filter.category[index].0 = cell.optionSwitch.isOn
         }
     }
     

@@ -197,7 +197,7 @@ class Filter {
     
     var distanceIndex: Int
     
-    var category: [Bool]
+    var category: [(Bool, (String, String))]
     
     var sortIndex: Int
     
@@ -205,7 +205,12 @@ class Filter {
         offerDeal = false
         distanceIndex = 0
         sortIndex = 0
-        category = Array(repeating: false, count: CATEGORY_OPTIONS.count)
+        let tmpCategory: [(String, String)] = CATEGORY_OPTIONS.map {
+            (dict: Dictionary<String, String>) -> (String, String)  in
+               (dict["name"]!, dict["code"]!)
+        }
+        let boolArray: [Bool] = Array(repeating: false, count: tmpCategory.count)
+        category = Array(zip(boolArray, tmpCategory))
     }
     
     func toString() -> String {
@@ -229,21 +234,33 @@ class Filter {
     }
     
     func getCategoryName(_ index: Int) -> String {
-        return self.CATEGORY_OPTIONS[index]["name"]!
+        return self.category[index].1.0
     }
     
     func getCategorySelected(_ index: Int) -> Bool {
-        return self.category[index]
+        return self.category[index].0
     }
     
     func getSelectedCategory() -> [String] {
         var codes: [String] = []
-        for (i, b) in self.category.enumerated() {
-            if (b) {
-                codes.append(self.CATEGORY_OPTIONS[i]["code"]!)
+        for (isSelected, value) in self.category {
+            if (isSelected) {
+                codes.append(value.1)
             }
         }
         return codes
+    }
+    
+    func refreshCategory() {
+        self.category.sort(by: compare)
+    }
+    
+    private func compare(a: (Bool, (String, String)), b: (Bool, (String, String))) -> Bool {
+        if (a.0 == b.0) {
+            return a.1.0 < b.1.0
+        } else {
+            return a.0
+        }
     }
     
     func setFilter(_ another: Filter) {
