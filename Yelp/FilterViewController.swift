@@ -13,6 +13,7 @@ class FilterViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     @IBOutlet weak var filterTable: UITableView!
     
+    var originalFilter: Filter = Filter()
     var filter: Filter = Filter()
     
     var distanceExpand: Bool = false
@@ -21,6 +22,8 @@ class FilterViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        self.originalFilter.setFilter(self.filter)
         print("am here!")
         
         filterTable.delegate = self
@@ -199,14 +202,18 @@ class FilterViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         let button = sender as! UIBarButtonItem
+        let controller = segue.destination as! UINavigationController
+        let vc = controller.topViewController as! BusinessesViewController
+        
         if (button == navigationItem.leftBarButtonItem) {
             // is cancel
             print("CANCEL")
+            print(originalFilter.toString())
+            vc.filter.setFilter(originalFilter)
         } else {
             // is search
             print("SEARCH")
-            let controller = segue.destination as! UINavigationController
-            let vc = controller.topViewController as! BusinessesViewController
+            print(filter.toString())
             vc.filter.setFilter(filter)
         }
     }

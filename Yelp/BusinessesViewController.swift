@@ -45,7 +45,6 @@ class BusinessesViewController: UIViewController, UITableViewDelegate, UITableVi
     
     // Implementing UITableViewDataSource, UITableViewDelegate
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        print("HAS \(self.businesses.count)")
         return self.displayBusinesses.count
     }
     
@@ -85,7 +84,6 @@ class BusinessesViewController: UIViewController, UITableViewDelegate, UITableVi
     }
     
     func reloadBusiness(term: String) {
-        print("Searching for \(term)")
         if (term.isEmpty) {
             self.displayBusinesses = self.businesses
         } else {
@@ -99,14 +97,10 @@ class BusinessesViewController: UIViewController, UITableViewDelegate, UITableVi
         vc.filter.setFilter(filter)
     }
     
-    func applyFilter(filter: Filter) {
-        self.filter.setFilter(filter)
-        print("apply \(filter.toString())")
-    }
-    
     private func searchBusiness() {
         //Business.searchWithTerm(term: self.term, completion: self.storeBusinesses)
         /* Example of Yelp search with more search options specified */
+        print("search \(filter.toString())")
         Business.searchWithTerm(
             term: self.term,
             sort: self.filter.getSortType(),
